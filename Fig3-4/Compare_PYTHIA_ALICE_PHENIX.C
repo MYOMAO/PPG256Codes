@@ -511,14 +511,14 @@ void Compare_PYTHIA_ALICE_PHENIX()
 	cZZ3->cd();
 
 	TPad *pad3[2];
-	pad3[0] = new TPad("pad13","left pad",0.0,0.0,0.525,1.0);
+	pad3[0] = new TPad("pad13","left pad",0.0,0.0,0.528,1.0);
 	pad3[0]->SetTopMargin(0.04);
 	pad3[0]->SetBottomMargin(0.14);
 	pad3[0]->SetRightMargin(0.0);
 	pad3[0]->SetLeftMargin(0.17);
 	pad3[0]->Draw();
 
-	pad3[1] = new TPad("pad23","middle pad",0.525,0.0,1.0,1.0);
+	pad3[1] = new TPad("pad23","middle pad",0.528,0.0,1.0,1.0);
 	pad3[1]->SetTopMargin(0.04);
 	pad3[1]->SetBottomMargin(0.14);
 	pad3[1]->SetRightMargin(0.00);

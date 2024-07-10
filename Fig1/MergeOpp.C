@@ -117,7 +117,7 @@ void MergeOpp(int Opt){
 		NJpsiNErr[i] = sqrt(NJpsiNStatErr[i] * NJpsiNStatErr[i] + NJpsiNSystErr[i] * NJpsiNSystErr[i]);
 		NJpsiSErr[i] = sqrt(NJpsiSStatErr[i] * NJpsiSStatErr[i] + NJpsiSSystErr[i] * NJpsiSSystErr[i]);
 
-		wtotalStat[i] = 1/(NJpsiNErr[i] * NJpsiNErr[i]) + 1/(NJpsiSErr[i] * NJpsiSErr[i]);
+		wtotalStat[i] = 1/(NJpsiNStatErr[i] * NJpsiNStatErr[i]) + 1/(NJpsiSStatErr[i] * NJpsiSStatErr[i]);
 		wtotalSyst[i] = 1/(NJpsiNSystErr[i] * NJpsiNSystErr[i]) + 1/(NJpsiSSystErr[i] * NJpsiSSystErr[i]);
 		wtotal[i] = 1/(NJpsiNErr[i] * NJpsiNErr[i]) + 1/(NJpsiSErr[i] * NJpsiSErr[i]);
 
