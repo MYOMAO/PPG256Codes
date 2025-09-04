@@ -1,6 +1,7 @@
-void Compare_PYTHIA_ALICE_PHENIX()
+void Compare_PYTHIA_ALICE_PHENIX_LHCb_Single()
 {
 
+	bool IncludeLHCb = true;
 	TLatex *lat = new TLatex();
 	lat->SetNDC();
 	lat->SetTextSize(0.05);
@@ -20,6 +21,64 @@ void Compare_PYTHIA_ALICE_PHENIX()
 	TGraphErrors *g1d_svx_result[2];
 	TGraphErrors *g1d_oppo_result[2];
 	TGraphErrors *g1d_alice_result[2];
+
+	const int NLHCb = 5;
+	float XValue[NLHCb] = {0.5157609299226299, 1.1052826416910375, 1.8152463628623257, 2.548115722059749, 3.7567004775478474};
+	float YValue[NLHCb] = {1.2930496427645948, 1.1147771443379115, 1.0096527597823273, 0.9203068892755342,  0.8364750305408509};
+	float YValueH[NLHCb] = {1.3389886351016178, 1.154968903861104, 1.0512854921704367, 0.9447090289860438,  0.8537000703365049};
+	float YValueStat[NLHCb] = {0.05,0.05,0.05,0.05,0.8436521304557068 - 0.8364750305408509};
+	float XValueErr[NLHCb] = {0.01,0.01,0.01,0.01,0.01};
+	float XValueErrSyst[NLHCb] = {0.05,0.05,0.05,0.05,0.05};
+	float YValueSyst[NLHCb];
+
+	for(int i = 0; i < NLHCb; i++){
+
+
+		YValueSyst[i] = YValueH[i] - YValue[i];
+		
+	}
+
+	TGraphErrors * LHCbJpsiPrompt = new TGraphErrors(NLHCb,XValue,YValue,XValueErr,YValueStat);
+	LHCbJpsiPrompt->SetMarkerStyle(24);
+	LHCbJpsiPrompt->SetMarkerSize(1);
+	LHCbJpsiPrompt->SetMarkerColor(kOrange);
+	LHCbJpsiPrompt->SetLineColor(kOrange);
+
+	TGraphErrors * LHCbJpsiPromptSyst = new TGraphErrors(NLHCb,XValue,YValue,XValueErrSyst,YValueSyst);
+	LHCbJpsiPromptSyst->SetMarkerColor(kOrange);
+	LHCbJpsiPromptSyst->SetLineColor(kOrange);
+
+
+	float XValueNP[NLHCb] = {0.5157609299226299, 1.1052826416910375, 1.8152463628623257, 2.548115722059749, 3.7567004775478474};
+	float YValueNP[NLHCb] = {1.0727179064496188, 1.0163939831032351, 1.0054440552235733, 0.9717123428806926,  0.9771234288069238};
+	float YValueHNP[NLHCb] = {1.0911930764475584, 1.0263548320626419, 1.0125530599629098, 0.9802513908922319,  0.9870842777663303};
+	float YValueStatHNP[NLHCb] = {1.125324541520709, 1.0590562538635897 , 1.0509499278796621, 1.000156604162374, 0.9998887286214715};
+	float XValueErrNP[NLHCb] = {0.01,0.01,0.01,0.01,0.01};
+	float YValueStatNP[NLHCb];
+	float YValueSystNP[NLHCb];
+	float XValueErrNPSyst[NLHCb] = {0.05,0.05,0.05,0.05,0.05};
+
+	for(int i = 0; i < NLHCb; i++){
+
+
+		YValueSystNP[i] = YValueHNP[i] - YValueNP[i];
+		YValueStatNP[i] = YValueStatHNP[i] - YValueNP[i];
+		
+	}
+
+
+	TGraphErrors * LHCbJpsiNP = new TGraphErrors(NLHCb,XValueNP,YValueNP,XValueErrNP,YValueStatNP);
+	LHCbJpsiNP->SetMarkerStyle(25);
+	LHCbJpsiNP->SetMarkerSize(1);
+	LHCbJpsiNP->SetMarkerColor(kBlack);
+	LHCbJpsiNP->SetLineColor(kBlack);
+
+
+	TGraphErrors * LHCbJpsiNPSyst = new TGraphErrors(NLHCb,XValueNP,YValueNP,XValueErrNPSyst,YValueSystNP);
+	LHCbJpsiNPSyst->SetMarkerColor(kBlack);
+	LHCbJpsiNPSyst->SetLineColor(kBlack);
+
+
 
 	for (int iset = 0; iset < nset; iset++)
 	{
@@ -54,11 +113,78 @@ void Compare_PYTHIA_ALICE_PHENIX()
 	g1d_alice_result[1] = (TGraphErrors *)infile1->Get("alice_sys");
 	g1d_alice_result[0]->SetMarkerColor(kGreen+2);
 	g1d_alice_result[0]->SetLineColor(kGreen+2);
-	g1d_alice_result[1]->SetLineColor(kGreen+2);
+	g1d_alice_result[1]->SetLineColorAlpha(kGreen+2,0.5);
+
+
+	const int NALICEPoints = 9;
+
+	float XALICE[NALICEPoints];
+	float YALICE[NALICEPoints];
+	float XErrALICE[NALICEPoints];
+	float YErrALICE[NALICEPoints];
+
+	for(int i = 0; i < NALICEPoints; i++){
+
+		XALICE[i] = g1d_alice_result[1]->GetPointX(i);
+		YALICE[i] = g1d_alice_result[1]->GetPointY(i);
+		XErrALICE[i] = g1d_alice_result[1]->GetErrorX(i);
+		YErrALICE[i] = g1d_alice_result[1]->GetErrorY(i);
+
+	}
+
+	TGraphErrors * ALICESyst = new TGraphErrors(NALICEPoints,XALICE,YALICE,XErrALICE,YErrALICE);
+	ALICESyst->SetLineColor(kGreen + 2);
+	ALICESyst->SetFillColorAlpha(kGreen + 2,0.5);
+
+	g1d_alice_result[0]->SetMarkerStyle(28);
 
 
 
-	g1d_alice_result[0]->SetMarkerStyle(34);
+	const int NPHENIXPoints = 8;
+
+	float XPHENIX[NPHENIXPoints];
+	float YPHENIX[NPHENIXPoints];
+	float XErrPHENIX[NPHENIXPoints];
+	float YErrPHENIX[NPHENIXPoints];
+
+	for(int i = 0; i < NPHENIXPoints; i++){
+
+		XPHENIX[i] = g1d_same_result[1]->GetPointX(i);
+		YPHENIX[i] = g1d_same_result[1]->GetPointY(i);
+		XErrPHENIX[i] = g1d_same_result[1]->GetErrorX(i);
+		YErrPHENIX[i] = g1d_same_result[1]->GetErrorY(i);
+
+	}
+
+	TGraphErrors * PHENIXSameSyst = new TGraphErrors(NPHENIXPoints,XPHENIX,YPHENIX,XErrPHENIX,YErrPHENIX);
+	PHENIXSameSyst->SetLineColor(kRed-9);
+	PHENIXSameSyst->SetFillColorAlpha(kRed-9,0.5);
+
+
+	const int NPHENIXPoints2 = 8;
+
+	float XPHENIX2[NPHENIXPoints2];
+	float YPHENIX2[NPHENIXPoints2];
+	float XErrPHENIX2[NPHENIXPoints2];
+	float YErrPHENIX2[NPHENIXPoints2];
+
+	for(int i = 0; i < NALICEPoints; i++){
+
+		XPHENIX2[i] = g1d_oppo_result[1]->GetPointX(i);
+		YPHENIX2[i] = g1d_oppo_result[1]->GetPointY(i);
+		XErrPHENIX2[i] = g1d_oppo_result[1]->GetErrorX(i);
+		YErrPHENIX2[i] = g1d_oppo_result[1]->GetErrorY(i);
+
+	}
+
+	TGraphErrors * PHENIXOppSyst = new TGraphErrors(NPHENIXPoints2,XPHENIX2,YPHENIX2,XErrPHENIX2,YErrPHENIX2);
+	PHENIXOppSyst->SetLineColor(kBlue-9);
+	PHENIXOppSyst->SetFillColorAlpha(kBlue-9,0.5);
+
+
+
+
+
 
 
 
@@ -136,11 +262,11 @@ void Compare_PYTHIA_ALICE_PHENIX()
 			g1d_oppo_result[0]->SetMarkerSize(1);
 
 			g1d_oppo_result[0]->Draw("p");
-			g1d_oppo_result[1]->Draw("e2");
+			g1d_oppo_result[1]->Draw("5SAME");
 
 			
 			g1d_alice_result[0]->Draw("p");
-			g1d_alice_result[1]->Draw("e2");
+			g1d_alice_result[1]->Draw("5SAME");
 
 			TLegend *leg = new TLegend(0.00, 0.95-0.06*4, 0.45, 0.95);
 
@@ -247,7 +373,7 @@ void Compare_PYTHIA_ALICE_PHENIX()
 			line->Draw();
 
 			g1d_alice_result[0]->Draw("p");
-			g1d_alice_result[1]->Draw("e2");
+			g1d_alice_result[1]->Draw("5SAME");
 
 			g1d_svx_result[0]->Draw("p");
 			g1d_svx_result[1]->Draw("e2");
@@ -346,7 +472,7 @@ void Compare_PYTHIA_ALICE_PHENIX()
 			g1d_fvtxs_scaled[1]->Draw("L3");
 
 			g1d_oppo_result[0]->Draw("p");
-			g1d_oppo_result[1]->Draw("e2");
+			g1d_oppo_result[1]->Draw("5SAME");
 
 			// oppo
 			TLegend *leg1 = new TLegend(0.08, 0.95-0.06*3, 0.4, 0.95);
@@ -396,19 +522,19 @@ void Compare_PYTHIA_ALICE_PHENIX()
 			TLine *line = new TLine(0.0,1,6.5,1);
 			line->SetLineStyle(7);
 			line->Draw();
-
+/*
 			g1d_fvtxn_scaled[0]->SetLineColorAlpha(kMagenta + 1, 0.3);
 			g1d_fvtxn_scaled[0]->SetLineWidth(4);
 			g1d_fvtxn_scaled[0]->SetFillColorAlpha(kMagenta + 1, 0.3);
 			g1d_fvtxn_scaled[0]->Draw("L3");
-
-			g1d_fvtxn_scaled[1]->SetLineColorAlpha(kGreen + 2, 0.3);
+*/
+			g1d_fvtxn_scaled[1]->SetLineColorAlpha(kGreen + 2, 0.5);
 			g1d_fvtxn_scaled[1]->SetLineWidth(4);
-			g1d_fvtxn_scaled[1]->SetFillColorAlpha(kGreen + 2, 0.3);
+			g1d_fvtxn_scaled[1]->SetFillColorAlpha(kGreen + 2, 0.5);
 			g1d_fvtxn_scaled[1]->Draw("L3");
 
 			g1d_same_result[0]->Draw("p");
-			g1d_same_result[1]->Draw("e2");
+			g1d_same_result[1]->Draw("5SAME");
 
 			// same
 			TLegend *leg1 = new TLegend(0.22, 0.95-0.06*3, 0.4, 0.95);
@@ -424,11 +550,11 @@ void Compare_PYTHIA_ALICE_PHENIX()
 			leg->SetFillStyle(0);
 			leg->SetTextSize(0.05);
 			leg->SetBorderSize(0);
-			leg->AddEntry(g1d_same_result[0], "PHENIX", "p");
+			leg->AddEntry(g1d_same_result[0], "PHENIX", "Lp");
 			leg->AddEntry(g1d_fvtxs_scaled[0], "PYTHIA8 Monash", "lf");
 			leg->AddEntry(g1d_fvtxs_scaled[1], "PYTHIA8 Detroit", "lf");
 			leg->Draw();
-			lat->DrawLatex(0.23,0.62,"With MPI");
+	//		lat->DrawLatex(0.23,0.62,"With MPI");
 			cZZ2->Update();
 		
 
@@ -506,283 +632,20 @@ void Compare_PYTHIA_ALICE_PHENIX()
 	c3->SaveAs("PYTHIA.png");
 
 
-	TCanvas *cZZ3 = new TCanvas("cZZ3", "cZZ3",600 * 2, 600);
+	TCanvas *cZZ3 = new TCanvas("cZZ3", "cZZ3",600 * 1, 600);
 
 	cZZ3->cd();
 
-	TPad *pad3[2];
-	pad3[0] = new TPad("pad13","left pad",0.0,0.0,0.528,1.0);
-	pad3[0]->SetTopMargin(0.04);
-	pad3[0]->SetBottomMargin(0.14);
-	pad3[0]->SetRightMargin(0.0);
-	pad3[0]->SetLeftMargin(0.17);
-	pad3[0]->Draw();
-
-	pad3[1] = new TPad("pad23","middle pad",0.528,0.0,1.0,1.0);
-	pad3[1]->SetTopMargin(0.04);
-	pad3[1]->SetBottomMargin(0.14);
-	pad3[1]->SetRightMargin(0.00);
-	pad3[1]->SetLeftMargin(0.0);
-	pad3[1]->Draw();
-
-
-
-
-
-	for (int pset = 0; pset < 2; pset++)
-	{
-		if (pset == 0)
-		{
-			// oppo PYTHIA to PHENIX
-			//c3->cd(3);
-			pad3[1]->cd();
-		
-			//gPad->SetMargin(0.14, 0.01, 0.13, 0.03);
-			//gPad->SetTicks();
-
-
-			TH1D *htmp = (TH1D *)gPad->DrawFrame(0.001, 0, 6.5, 2.5);
-			htmp->GetXaxis()->SetTitle("N_{ch} / #LTN_{ch}#GT");
-			htmp->GetXaxis()->SetLabelSize(0.05);
-			htmp->GetXaxis()->SetTitleSize(0.06);
-			htmp->GetXaxis()->SetNdivisions(9,4,0);
-			htmp->GetXaxis()->SetTitleOffset(1.0);
-			htmp->GetYaxis()->SetTitle("");
-			htmp->GetYaxis()->SetLabelSize(0.00);
-			htmp->GetYaxis()->SetTitleSize(0.00);
-			htmp->GetYaxis()->SetTitleOffset(1111.05);
-
-
-			htmp->GetYaxis()->SetNdivisions(9,5,0);
-			htmp->GetXaxis()->CenterTitle();
-			htmp->GetYaxis()->CenterTitle();
-
-			TLine *line = new TLine(0.0,1,6.5,1);
-			line->SetLineStyle(7);
-			line->Draw();
-
-			g1d_fvtxs_scaled[0]->SetLineColorAlpha(kMagenta + 1, 0.3);
-			g1d_fvtxs_scaled[0]->SetLineWidth(4);
-			g1d_fvtxs_scaled[0]->SetFillColorAlpha(kMagenta + 1, 0.3);
-			g1d_fvtxs_scaled[0]->Draw("L3");
-
-		//	g1d_fvtxs_scaled[1]->SetLineColorAlpha(kGreen + 2, 0.3);
-			g1d_fvtxs_scaled[1]->SetLineColorAlpha(kCyan + 2, 0.3);
-
-			g1d_fvtxs_scaled[1]->SetLineWidth(4);
-		//	g1d_fvtxs_scaled[1]->SetFillColorAlpha(kGreen + 2, 0.3);
-			g1d_fvtxs_scaled[1]->SetFillColorAlpha(kCyan + 2, 0.3);
-			
-			g1d_fvtxs_scaled[1]->Draw("L3");
-
-
-			g1d_oppo_result[0]->SetMarkerStyle(21);
-			
-			g1d_oppo_result[0]->Draw("p");
-			g1d_oppo_result[1]->Draw("e2");
-
-
-			
-			g1d_alice_result[0]->Draw("pSAME");
-			g1d_alice_result[1]->Draw("e2SAME");
-
-
-
-			// oppo
-			TLegend *leg1 = new TLegend(0.08, 0.95-0.06*4, 0.4, 0.95);
-			leg1->SetFillStyle(0);
-			leg1->SetTextSize(0.05);
-			leg1->SetBorderSize(0);
-			leg1->AddEntry(g1d_oppo_result[0], "PHENIX", "p");
-
-			leg1->AddEntry("", "p+p #sqrt{s} = 200 GeV", "h");
-			leg1->AddEntry("", "N_{#psi}: 1.2 < |y| < 2.2", "h");
-			leg1->AddEntry("", "N_{ch}: #LT|#Delta#eta|#GT = 3.4", "h");
-			leg1->Draw();
-
-			TLegend *leg = new TLegend(0.48, 0.95-0.06*1, 0.95, 0.95);
-			leg->SetFillStyle(0);
-			leg->SetTextSize(0.05);
-			leg->SetBorderSize(0);
-	//		leg->AddEntry(g1d_oppo_result[0], "PHENIX", "p");
-	//		leg->AddEntry(g1d_fvtxs_scaled[0], "PYTHIA8 Monash", "lf");
-	//		leg->AddEntry(g1d_fvtxs_scaled[1], "PYTHIA8 Detroit", "lf");
-	//		leg->Draw();
-			cZZ3->Update();
-			
-		}
-		else if (pset == 1)
-		{
-			// same PYTHIA to PHENIX
-			//c3->cd(1);
-			//gPad->SetMargin(0.14, 0.01, 0.13, 0.03);
-			//gPad->SetTicks();
-
-			pad3[0]->cd();
-		
-
-			TH1D *htmp = (TH1D *)gPad->DrawFrame(0, 0, 6.5, 2.5);
-			htmp->GetXaxis()->SetTitle("N_{ch} / #LTN_{ch}#GT");
-			htmp->GetXaxis()->SetLabelSize(0.05);
-			htmp->GetXaxis()->SetTitleSize(0.06);
-			htmp->GetXaxis()->SetNdivisions(9,4,0);
-			htmp->GetXaxis()->SetTitleOffset(1.0);
-			htmp->GetYaxis()->SetTitle("(N_{#psi(2S)}/N_{J/#psi}) #scale[1.5]{/} #LTN_{#psi(2S)}/N_{J/#psi}#GT");
-			htmp->GetYaxis()->SetLabelSize(0.05);
-			htmp->GetYaxis()->SetTitleSize(0.06);
-			htmp->GetYaxis()->SetTitleOffset(1.2);
-			htmp->GetYaxis()->SetNdivisions(9,5,0);
-			htmp->GetXaxis()->CenterTitle();
-			htmp->GetYaxis()->CenterTitle();
-
-			TLine *line = new TLine(0.0,1,6.5,1);
-			line->SetLineStyle(7);
-			line->Draw();
-
-			g1d_fvtxn_scaled[0]->SetLineColorAlpha(kMagenta + 1, 0.3);
-			g1d_fvtxn_scaled[0]->SetLineWidth(4);
-			g1d_fvtxn_scaled[0]->SetFillColorAlpha(kMagenta + 1, 0.3);
-			g1d_fvtxn_scaled[0]->Draw("L3");
-
-//			g1d_fvtxn_scaled[1]->SetLineColorAlpha(kGreen + 2, 0.3);
-			g1d_fvtxn_scaled[1]->SetLineColorAlpha(kCyan + 2, 0.3);
-		
-			g1d_fvtxn_scaled[1]->SetLineWidth(4);
-	//		g1d_fvtxn_scaled[1]->SetFillColorAlpha(kGreen + 2, 0.3);
-			g1d_fvtxn_scaled[1]->SetFillColorAlpha(kCyan + 2, 0.3);
 	
-			g1d_fvtxn_scaled[1]->Draw("L3");
-
-			g1d_same_result[0]->Draw("p");
-			g1d_same_result[1]->Draw("e2");
-			g1d_alice_result[0]->Draw("pSAME");
-			g1d_alice_result[1]->Draw("e2SAME");
-
-
-			// same
-			TLegend *leg1 = new TLegend(0.22, 0.95-0.06*4, 0.4, 0.95);
-			leg1->SetFillStyle(0);
-			leg1->SetTextSize(0.05);
-			leg1->SetBorderSize(0);
-			leg1->AddEntry(g1d_same_result[0], "PHENIX", "p");
-			
-			leg1->AddEntry("", "p+p #sqrt{s} = 200 GeV", "h");
-			leg1->AddEntry("", "N_{#psi}: 1.2 < |y| < 2.2", "h");
-			leg1->AddEntry("", "N_{ch}: #LT|#Delta#eta|#GT = 0", "h");
-			leg1->Draw();
-
-			TLegend *leg = new TLegend(0.22, 0.2, 0.60, 0.34);
-			leg->SetFillStyle(0);
-			leg->SetTextSize(0.05);
-			leg->SetBorderSize(0);
-	//		leg->AddEntry(g1d_same_result[0], "PHENIX", "p");
-			leg->AddEntry(g1d_fvtxn_scaled[0], "PYTHIA8 Monash", "lf");
-			leg->AddEntry(g1d_fvtxn_scaled[1], "PYTHIA8 Detroit", "lf");
-			leg->Draw();
-			lat->DrawLatex(0.23,0.62,"With MPI");
+	g1d_fvtxn_scaled[1]->SetLineColorAlpha(kCyan + 2, 0.3);	
+	g1d_fvtxn_scaled[1]->SetLineWidth(4);
+	g1d_fvtxn_scaled[1]->SetFillColorAlpha(kCyan + 2, 0.3);
+	g1d_fvtxn_scaled[1]->Draw("L3");
+	g1d_same_result[0]->Draw("p");
+	PHENIXSameSyst->Draw("5SAME");
 
 
-			TLegend *leg2 = new TLegend(0.56, 0.95-0.06*4, 0.95, 0.95);
-
-		//	TLegend *leg2 = new TLegend(0.18, 0.1, 0.45, 0.34);
-			leg2->SetFillStyle(0);
-			leg2->SetTextSize(0.05);
-			leg2->SetBorderSize(0);
-			leg2->AddEntry(g1d_alice_result[0], "ALICE", "p");
-			leg2->AddEntry("", "p+p #sqrt{s} = 13 TeV", "");
-			leg2->AddEntry("", "N_{#psi}: 2.5 < y < 4.0", "");
-			leg2->AddEntry("", "N_{ch}: |#eta| < 1", "");
-
-			leg2->Draw();
-			//lat->DrawLatex(0.23,0.62,"With MPI");
-			cZZ3->Update();
-		
-
-
-		}
-		/*
-		else if (pset == 2)
-		{
-
-			// svx PYTHIA to PHENIX
-//			c3->cd(2);
-
-			pad3[1]->cd();
-
-			TH1D *htmp = (TH1D *)gPad->DrawFrame(0.001, 0, 6.5, 2.5); // alice
-			htmp->GetXaxis()->SetTitle("N_{ch} / #LTN_{ch}#GT");
-			htmp->GetXaxis()->SetLabelSize(0.05);
-			htmp->GetXaxis()->SetTitleSize(0.06);
-			htmp->GetXaxis()->SetNdivisions(9,4,0);
-			htmp->GetXaxis()->SetTitleOffset(1.0);
-			htmp->GetYaxis()->SetTitle("");
-			htmp->GetYaxis()->SetLabelSize(0.05);
-			htmp->GetYaxis()->SetLabelSize(0.00);			
-			htmp->GetYaxis()->SetTitleSize(0.06);
-			htmp->GetYaxis()->SetTitleOffset(1.05);
-			htmp->GetYaxis()->SetTitleOffset(1111.05);
-			htmp->GetYaxis()->SetNdivisions(9,5,0);
-			htmp->GetXaxis()->CenterTitle();
-			htmp->GetYaxis()->CenterTitle();
-
-
-			TLine *line = new TLine(0.0,1,6.5,1);
-			line->SetLineStyle(7);
-			line->Draw();
-
-			g1d_svx_scaled[0]->SetLineColorAlpha(kMagenta + 1, 0.3);
-			g1d_svx_scaled[0]->SetLineWidth(4);
-			g1d_svx_scaled[0]->SetFillColorAlpha(kMagenta + 1, 0.3);
-			g1d_svx_scaled[0]->Draw("L3");
-
-//			g1d_svx_scaled[1]->SetLineColorAlpha(kGreen + 2, 0.3);
-			g1d_svx_scaled[1]->SetFillColorAlpha(kCyan + 2, 0.3);
-		
-			g1d_svx_scaled[1]->SetLineWidth(4);
-			//g1d_svx_scaled[1]->SetFillColorAlpha(kGreen + 2, 0.3);
-			g1d_svx_scaled[1]->SetLineColorAlpha(kCyan + 2, 0.3);
-
-		
-			g1d_svx_scaled[1]->Draw("L3");
-
-			g1d_svx_result[0]->Draw("p");
-			g1d_svx_result[1]->Draw("e2");
-			g1d_alice_result[0]->Draw("pSAME");
-			g1d_alice_result[1]->Draw("e2SAME");
-
-
-			TLegend *leg1 = new TLegend(0.08, 0.95-0.06*4, 0.4, 0.95);
-			leg1->SetFillStyle(0);
-			leg1->SetTextSize(0.05);
-			leg1->SetBorderSize(0);
-			leg1->AddEntry(g1d_svx_result[0], "PHENIX", "p");
-			leg1->AddEntry("", "p+p #sqrt{s} = 200 GeV", "h");
-			leg1->AddEntry("", "N_{#psi}: 1.2 < |y| < 2.2", "h");
-			leg1->AddEntry("", "N_{ch}: #LT|#Delta#eta|#GT = 1.7", "h");
-			leg1->Draw();
-
-			:w
-			TLegend *leg = new TLegend(0.48, 0.95-0.06*1, 0.95, 0.95);
-			leg->SetFillStyle(0);
-			leg->SetTextSize(0.05);
-			leg->SetBorderSize(0);
-	//		leg->AddEntry(g1d_svx_result[0], "PHENIX", "p");
-	//		leg->AddEntry(g1d_svx_scaled[0], "PYTHIA8 Monash", "lf");
-	//		leg->AddEntry(g1d_svx_scaled[1], "PYTHIA8 Detroit", "lf");
-			leg->Draw();
-			cZZ3->Update();
-		
-
-
-		}
-	*/
-	}
-		
-
-
-	cZZ3->SaveAs("BothNew.png");
-	cZZ3->SaveAs("BothNew.pdf");
-
+	cZZ3->SaveAs("Single.png");
 
 
 }

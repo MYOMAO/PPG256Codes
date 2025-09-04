@@ -30,7 +30,7 @@ void MergeSame(int Opt){
 	const int NTypes = 2;
 	const int NDir = 2;
 	TString infile;
-	
+
 	int Color[NTypes] = {2,4};
 
 	TString InName[NTypes] = {"UnCorr","Corr"};
@@ -42,7 +42,7 @@ void MergeSame(int Opt){
 	fout->cd();
 
 	
-	const int NPoints = 10;
+	const int NPoints = 9;
 	float Nch[NPoints];
 	float NJpsi[NPoints];
 	float NJpsiStatErr[NPoints];

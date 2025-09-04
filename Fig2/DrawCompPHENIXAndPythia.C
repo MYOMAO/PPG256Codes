@@ -729,7 +729,9 @@ void DrawCompPHENIXAndPythia(){
 
 
 
-	gphenix1->SetMarkerStyle(24);
+//	gphenix1->SetMarkerStyle(24);
+	gphenix1->SetMarkerStyle(47);
+	
 	gphenix1->SetMarkerColor(6);
 	gphenix1->SetFillStyle(0);
 	gphenix1->SetLineColor(6);
@@ -739,11 +741,11 @@ void DrawCompPHENIXAndPythia(){
 
 
 
-	PHENIXSystError1->SetFillColorAlpha(kMagenta-9,0.0);
+	PHENIXSystError1->SetFillColorAlpha(kMagenta-9,0.5);
 	PHENIXSystError1->SetLineColor(kMagenta-9);
 
 
-	PHENIXSystError1->SetFillColorAlpha(kRed-9,0.0);
+	PHENIXSystError1->SetFillColorAlpha(kRed-9,0.5);
 	PHENIXSystError1->SetLineColor(kRed-9);
 
 
@@ -756,10 +758,10 @@ void DrawCompPHENIXAndPythia(){
 	gphenix2->SetMarkerColor(6);
 	gphenix2->SetLineColor(6);
 
-	PHENIXSystError2->SetFillColorAlpha(kRed-9,0.0);
-	PHENIXSystError2->SetFillColorAlpha(kRed-9,0.0);
+	PHENIXSystError2->SetFillColorAlpha(kRed-9,0.5);
+	PHENIXSystError2->SetFillColorAlpha(kRed-9,0.5);
 
-	PHENIXSystError2->SetFillColorAlpha(kMagenta-9,0.0);
+	PHENIXSystError2->SetFillColorAlpha(kMagenta-9,0.5);
 	PHENIXSystError2->SetLineColor(kMagenta-9);
 
 	TCanvas *c5a = new TCanvas("c5a","c5a",1.2*2*500,1*500);
@@ -936,6 +938,8 @@ void DrawCompPHENIXAndPythia(){
 
 		gphenix1->Draw("ep");
 		PHENIXSystError1->Draw("5SAME");
+		gphenix2->SetMarkerStyle(47);
+		
 		gphenix2->Draw("epSAME");
 		PHENIXSystError2->Draw("5SAME");
 
@@ -959,19 +963,19 @@ void DrawCompPHENIXAndPythia(){
 			leg->SetTextSize(0.04);
 	//		leg->AddEntry("","PYTHIA8 pp 200 GeV","h");
 	//		leg->AddEntry("",Form("%s Tune",setname[iset].c_str()),"h");
-			leg->AddEntry("","J/#psi, 1.2<|y|<2.2","h");
+			leg->AddEntry("","N_{J/#psi}, 1.2<|y|<2.2","h");
 			leg->AddEntry("","N_{ch}: 1.2<|#eta|<2.6","h");
 
 //			leg->AddEntry(gr2svx_scaled[iset][1],"N_{ch}: -1<#eta<1","LF");
 //			leg->AddEntry(gr2fvtxs_scaled[iset][1],"N_{ch}: -2.6<#eta<-1.2","LF");
 		
-			TLegend *leg2 = new TLegend(0.60,0.75,0.98,0.95);
+			TLegend *leg2 = new TLegend(0.57,0.75,0.98,0.95);
 			leg2->SetFillStyle(0);
 			leg2->SetBorderSize(0);
 			leg2->SetTextSize(0.04);
-			leg2->AddEntry("","PYTHIA8 pp","h");
+			leg2->AddEntry("","PYTHIA8 (Detroit) pp","h");
 			leg2->AddEntry("","#sqrt{s} = 200 GeV","h");			
-			leg2->AddEntry("",Form("%s Tune",setname[iset].c_str()),"h");
+		//	leg2->AddEntry("",Form("%s Tune",setname[iset].c_str()),"h");
 
 	//		leg->AddEntry("","","");
 
@@ -1031,7 +1035,7 @@ void DrawCompPHENIXAndPythia(){
 		legBefore->SetTextSize(0.04);
 
 		legBefore->AddEntry("","","h");
-		legBefore->AddEntry(gphenix1,"","PF");
+		legBefore->AddEntry(gphenix1,"","LP");
 		legBefore->AddEntry(gr2fvtxn_mu_scaled[iset2][1],"","LF");		
 		legBefore->AddEntry(gr2fvtxn_mu_scaled[iset][1],"","LF");
 		legBefore->Draw();
@@ -1056,7 +1060,7 @@ void DrawCompPHENIXAndPythia(){
 		legAfter->SetTextSize(0.04);
 
 		legAfter->AddEntry("","","h");
-		legAfter->AddEntry(gphenix2,"","PF");
+		legAfter->AddEntry(gphenix2,"","LP");
 		legAfter->AddEntry(gr2fvtxn_scaled[iset2][1],"","LF");		
 		legAfter->AddEntry(gr2fvtxn_scaled[iset][1],"","LF");
 		legAfter->Draw();
